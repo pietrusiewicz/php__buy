@@ -16,21 +16,6 @@ Route::get('/login', function (Request $request) {
     return view('login', ['info'=>""]);
 });
 
-class Profile {
-    public static function login(Request $request) {
-        $usname = $_POST['usname'];
-        $passwd = $_POST['passwd'];
-        //if (isset(['usname']))
-        if (User::authenticate($usname, $passwd)) {
-            $request->session()->put("usname", "$usname");
-            return view('profile', ['user'=>$request->session()->get("usname")]);
-        } else {
-            return view("login", ['info'=>"Invalid data"]);
-            //return View::make('login', array('info' => 'Invalid data'));
-        }
-    
-    }
-}
 
 Route::get('/profile', function (Request $request) {
     if ($request->session()->missing('usname')) {
