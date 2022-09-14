@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
 <title>tytuł</title>
@@ -12,7 +12,6 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
     <input type="submit" value="Log in"/>
 </form>
-@if 
-<p>{{ $login['info'] }}</p>
+<p>{{ $info }}</p>
 </body>
 </html>
