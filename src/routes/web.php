@@ -37,6 +37,31 @@ class Profile {
     }
 }
 
+
+Route::post('/del_item', function (Request $request) {
+    /*
+    if (Input::get('item_name')) {
+        $arr = $request->session()->get('todolist');
+        array_push($arr, $_POST['item_name']);
+        */
+    #$item_id = intval($_POST['item_id']);
+    $r = $request->session();
+    $todolist = $r->get('todolist');
+    $todolist;
+    $tl = [];
+    $i = 0;
+    for($i=0;$i<count($todolist); $i++) {
+        if (!isset($_POST["$i"])){
+            array_push($tl, $todolist[$i]);
+        }
+    }
+    $r->forget('todolist');
+    $r->put("todolist", $tl);
+    //$r->push('todolist', $item);
+    //return Profile::go_view($request);
+    return Redirect::back();
+});
+
 Route::post('/add_item', function (Request $request) {
     /*
     if (Input::get('item_name')) {
