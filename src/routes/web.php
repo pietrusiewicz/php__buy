@@ -30,21 +30,19 @@ class Profile {
         $items = $request->session()->get('todolist');
         return ['user'=>$request->session()->get("usname"), "items"=>$items];
     }
-    public static function go_view(Request $request) {
+    public static function go_view(Request $request, $view_name='profile') {
 
-        return view('profile', self::get_data($request));
+        return view($view_name, self::get_data($request));
     
     }
 }
 
+Route::get('/todolist', function (Request $request) {
+    $todolist = $request->session()->get('todolist');
+    return Profile::go_view($request, 'todolist');
+});
 
-Route::post('/del_item', function (Request $request) {
-    /*
-    if (Input::get('item_name')) {
-        $arr = $request->session()->get('todolist');
-        array_push($arr, $_POST['item_name']);
-        */
-    #$item_id = intval($_POST['item_id']);
+Route::post('/todolist/del_item', function (Request $request) {
     $r = $request->session();
     $todolist = $r->get('todolist');
     $todolist;
@@ -62,7 +60,7 @@ Route::post('/del_item', function (Request $request) {
     return Redirect::back();
 });
 
-Route::post('/add_item', function (Request $request) {
+Route::post('/todolist/add_item', function (Request $request) {
     /*
     if (Input::get('item_name')) {
         $arr = $request->session()->get('todolist');
@@ -108,7 +106,7 @@ Route::post('/profile', function (Request $request) {
 });
 
 
-Route::get('/profile/logout', function (Request $request) {
+Route::get('/logout', function (Request $request) {
     $request->session()->forget('usname');
     $request->session()->forget('todolist');
     return Redirect::to('/login');
