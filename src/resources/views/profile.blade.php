@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>profile: {{ $user }}</title>
-</head>
-<body>
-    <h1>username: {{ $user }} <a href="/todolist/">Todolist</a> <a href="/logout/">logout</a></h1>
+<header>
+    <i>username: {{ $user }}</i>
+    <a href="/todolist/">Todolist</a> 
+    <a href="/shop/">Shop</a> 
+    <a href="/calories_counter/">Calories counter</a> 
+    <a href="/logout/">logout</a>
     
-</body>
-</html>
+</header>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+require_once 'todolist.php';
 require_once 'User.php';
 
 Route::get('/', function () {
@@ -16,15 +17,6 @@ Route::get('/login', function (Request $request) {
     return view('login', ['info'=>""]);
 });
 
-/*
-class Todolist {
-    public static function addItem(Request $request, $item_name) {
-        $request->session()->get('todolist');//array_push($todolist,$item_name);
-        return $todolist;
-    }
-
-}
- */
 class Profile {
     public static function get_data(Request $request) {
         $items = $request->session()->get('todolist');
@@ -45,33 +37,28 @@ Route::get('/todolist', function (Request $request) {
 Route::post('/todolist/del_item', function (Request $request) {
     $r = $request->session();
     $todolist = $r->get('todolist');
-    $todolist;
-    $tl = [];
-    $i = 0;
-    for($i=0;$i<count($todolist); $i++) {
-        if (!isset($_POST["$i"])){
-            array_push($tl, $todolist[$i]);
-        }
-    }
+    $tl = todolist::addItem($todolist);
+
     $r->forget('todolist');
     $r->put("todolist", $tl);
-    //$r->push('todolist', $item);
-    //return Profile::go_view($request);
+
     return Redirect::back();
 });
 
 Route::post('/todolist/add_item', function (Request $request) {
-    /*
-    if (Input::get('item_name')) {
-        $arr = $request->session()->get('todolist');
-        array_push($arr, $_POST['item_name']);
-        */
     $item = $_POST['item_name'];
-    $r = $request->session();
     #TODO
-    $r->push('todolist', $item);
+    $request->session()->push('todolist', $item);
     //return Profile::go_view($request);
     return Redirect::back();
+});
+
+Route::get('/shop', function (Request $request) {
+        return Profile::go_view($request, 'shop');
+});
+
+Route::get('/calories_counter', function (Request $request) {
+    return Profile::go_view($request, 'calories_counter');
 });
 
 Route::get('/profile', function (Request $request) {
@@ -93,6 +80,7 @@ Route::post('/profile', function (Request $request) {
         if (User::authenticate($usname, $passwd)) {
             $request->session()->put("usname", "$usname");
             $request->session()->put("todolist", ["php", "laravel"]);
+            $request->session()->put("cart", []);
             return Profile::go_view($request);
             #return view('profile', ['user'=>$request->session()->get("usname")]);
         } else {
