@@ -19,8 +19,9 @@ Route::get('/login', function (Request $request) {
 
 class Profile {
     public static function get_data(Request $request) {
-        $items = $request->session()->get('todolist');
-        return ['user'=>$request->session()->get("usname"), "items"=>$items];
+        $todolist = $request->session()->get('todolist');
+        $foods = $request->session()->get('foods');
+        return ['user'=>$request->session()->get("usname"), "todolist"=>$todolist, "foods"=>$foods];
     }
     public static function go_view(Request $request, $view_name='profile') {
 
@@ -47,18 +48,26 @@ Route::post('/todolist/del_item', function (Request $request) {
 
 Route::post('/todolist/add_item', function (Request $request) {
     $item = $_POST['item_name'];
-    #TODO
     $request->session()->push('todolist', $item);
     //return Profile::go_view($request);
     return Redirect::back();
 });
 
 Route::get('/shop', function (Request $request) {
-        return Profile::go_view($request, 'shop');
+    #TODO
+    return Profile::go_view($request, 'shop');
 });
 
 Route::get('/calories_counter', function (Request $request) {
+    a
+    #TODO
     return Profile::go_view($request, 'calories_counter');
+});
+Route::post('/caories_counter/add_food', function (Request $request) {
+    $item = $_POST['food_name'];
+    $request->session()->push('foods', $item);
+    //return Profile::go_view($request);
+    return Redirect::back();
 });
 
 Route::get('/profile', function (Request $request) {
@@ -79,7 +88,12 @@ Route::post('/profile', function (Request $request) {
         //if (isset(['usname']))
         if (User::authenticate($usname, $passwd)) {
             $request->session()->put("usname", "$usname");
+	    # todolist
             $request->session()->put("todolist", ["php", "laravel"]);
+	    # calories counter
+            $request->session()->put("foods", ["apple"=>["cals"=>95]]);
+            $request->session()->put("foods_ate", []);
+	    # shop
             $request->session()->put("cart", []);
             return Profile::go_view($request);
             #return view('profile', ['user'=>$request->session()->get("usname")]);
@@ -97,6 +111,7 @@ Route::post('/profile', function (Request $request) {
 Route::get('/logout', function (Request $request) {
     $request->session()->forget('usname');
     $request->session()->forget('todolist');
+    $request->session()->forget('foods');
     return Redirect::to('/login');
 });
 
