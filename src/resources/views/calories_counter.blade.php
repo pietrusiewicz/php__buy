@@ -2,13 +2,20 @@
 <html>
 <head>
     <title>calories counter</title>
+    <style>
+	ol {
+	  width:40%;
+	}
+    </style>
 </head>
 <body>
     @include('profile')
     <h1>Calories counter</h1>
-    <ul>
+    <ol>
         @for ($i=0; $i<count($foods); $i++) 
-	    <li>{{ $foods[$i] }}</li>
+	<form method="post" action="del_food/">
+            <li>{{$foods[$i]}}<input type='submit' value='-' name='{{ $i }}'/></li>
+	</form>
         @endfor
 	<li>
         <form method='post' action='add_food/'>
@@ -19,17 +26,20 @@
         </form>
 	</li>
 
-    </ul>
-    <hr/>
+    </ol>
+
+    <div style="clear:both;"></div>
+
     <ol>
-        @for ($i=0; $i<count($foods); $i++)
+        @for ($i=0; $i<count($ate_foods); $i++)
         <form method='post' action='del_cal/'>
             @csrf
-            <li>{{$foods[$i]}}<input type='submit' value='+' name='{{ $i }}'/></li>
+            <li>{{$ate_foods[$i]}}<input type='submit' value='-' name='{{ $i }}'/></li>
         </form>
-
         @endfor
-
+	<form>
+	    <li><input type="number" name="nr"/></li>
+	</form>
     </ol>
 </body>
 </html>
