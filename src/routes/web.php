@@ -62,7 +62,6 @@ Route::get('/shop', function (Request $request) {
 
 /* calories counter */
 Route::get('/calories_counter', function (Request $request) {
-    a
     #TODO
     return Profile::go_view($request, 'calories_counter');
 });
@@ -73,7 +72,7 @@ Route::post('/calories_counter/add_food', function (Request $request) {
     //return Profile::go_view($request);
     return Redirect::back();
 });
-Route::post('/calories_counter/del_food', function (Request $request)) {
+Route::post('/calories_counter/del_food', function (Request $request) {
     $r = $request->session();
     $array = $r->get('foods');
     $tl = delItemArray($array);
@@ -82,8 +81,8 @@ Route::post('/calories_counter/del_food', function (Request $request)) {
     $r->put("foods", $tl);
 
     return Redirect::back();
-}
-Route::post('/calories_counter/del_cal', function (Request $request)) {
+});
+Route::post('/calories_counter/del_cal', function (Request $request) {
     $r = $request->session();
     $array = $r->get('ate_foods');
     $tl = delItemArray($array);
@@ -92,7 +91,7 @@ Route::post('/calories_counter/del_cal', function (Request $request)) {
     $r->put("ate_foods", $tl);
 
     return Redirect::back();
-}
+});
 Route::post('/calories_counter/add_cal', function (Request $request) {
     $nr = $_POST['nr'];
     $foods = $request->session()->get('foods');
