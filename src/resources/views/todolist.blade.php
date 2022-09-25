@@ -7,10 +7,10 @@
     @include('profile')
     <h2>Todolist</h2>
     <ol>
-        @for ($i=0; $i<count($items); $i++) 
+        @for ($i=0; $i<count($todolist); $i++) 
             <form method='post' action='del_item/'>
                 @csrf
-                <li>{{$items[$i]}}<input type='submit' value='-' name='{{ $i }}'/></li>
+                <li>{{$todolist[$i]}}<input type='submit' value='-' name='{{ $i }}'/></li>
             </form>
 
         @endfor
