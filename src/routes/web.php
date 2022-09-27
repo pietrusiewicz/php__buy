@@ -17,23 +17,10 @@ Route::get('/login', function (Request $request) {
     return view('login', ['info'=>""]);
 });
 
-class Profile {
-    public static function get_data(Request $request) {
-        $todolist = $request->session()->get('todolist');
-        $foods = $request->session()->get('foods');
-        $ate_foods = $request->session()->get('ate_foods');
-        return ['user'=>$request->session()->get("usname"), "todolist"=>$todolist, "foods"=>$foods, "ate_foods"=>$ate_foods, "i"=>0];
-    }
-    public static function go_view(Request $request, $view_name='profile') {
-
-        return view($view_name, self::get_data($request));
-    
-    }
-}
 /* todolist */
 Route::get('/todolist', function (Request $request) {
     $todolist = $request->session()->get('todolist');
-    return Profile::go_view($request, 'todolist');
+    return User::go_view($request, 'todolist');
 });
 
 Route::post('/todolist/del_item', function (Request $request) {
@@ -57,13 +44,13 @@ Route::post('/todolist/add_item', function (Request $request) {
 /* shop */
 Route::get('/shop', function (Request $request) {
     #TODO
-    return Profile::go_view($request, 'shop');
+    return User::go_view($request, 'shop');
 });
 
 /* calories counter */
 Route::get('/calories_counter', function (Request $request) {
     #TODO
-    return Profile::go_view($request, 'calories_counter');
+    return User::go_view($request, 'calories_counter');
 });
 Route::post('/calories_counter/add_food', function (Request $request) {
     $food = $_POST['food_name'];
@@ -107,7 +94,7 @@ Route::get('/profile', function (Request $request) {
         return Redirect::to('/login');
     } else {
         #return view('profile', ['user'=>$request->session()->get("usname")]);
-        return Profile::go_view($request);
+        return User::go_view($request);
     }
 });
 
@@ -127,14 +114,14 @@ Route::post('/profile', function (Request $request) {
             $request->session()->put("foods_ate", []);
 	    # shop
             $request->session()->put("cart", []);
-            return Profile::go_view($request);
+            return User::go_view($request);
             #return view('profile', ['user'=>$request->session()->get("usname")]);
         } else {
             return view("login", ['info'=>"Invalid data"]);
             //return View::make('login', array('info' => 'Invalid data'));
         }
     } else {
-        return Profile::go_view($request);
+        return User::go_view($request);
         #return view('profile', ['user'=>$request->session()->get("usname")]);
     }
 });
