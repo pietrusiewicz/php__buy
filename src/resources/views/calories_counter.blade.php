@@ -12,11 +12,14 @@
     @include('profile')
     <h1>Calories counter</h1>
     <ol>
-        @for ($i=0; $i<count($foods); $i++) 
+    @if (count($foods)>0)
+        @foreach (array_keys($foods) as $key)
+	<?php $i++; ?>
 	<form method="post" action="del_food/">
-            <li>{{$foods[$i]}}<input type='submit' value='-' name='{{ $i }}'/></li>
+            <li>{{ $key }}<input type='submit' value='-' name='{{ $i }}'/></li>
 	</form>
-        @endfor
+        @endforeach
+    @endif
 	<li>
         <form method='post' action='add_food/'>
             @csrf
@@ -25,18 +28,18 @@
 	    <input type='submit' value='+'/>
         </form>
 	</li>
-
     </ol>
 
-    <div style="clear:both;"></div>
-
+<?php $i = 0; ?>
     <ol>
-        @for ($i=0; $i<count($ate_foods); $i++)
-        <form method='post' action='del_cal/'>
-            @csrf
-            <li>{{$ate_foods[$i]}}<input type='submit' value='-' name='{{ $i }}'/></li>
-        </form>
-        @endfor
+    @if ($ate_foods)
+        @foreach (array_keys($ate_foods) as $key)
+	<?php $i++; ?>
+	<form method="post" action="add_food/">
+            <li>{{ $key }}<input type='submit' value='-' name='{{ $i }}'/></li>
+	</form>
+        @endforeach
+    @endif
 	<form>
 	    <li><input type="number" name="nr"/></li>
 	</form>
