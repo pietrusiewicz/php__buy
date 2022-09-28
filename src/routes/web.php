@@ -5,8 +5,81 @@ use Illuminate\Http\Request;
 require_once 'funcs.php';
 require_once 'User.php';
 
-Route::get('/', function () {
-    return view('index');
+Route::get('/', function (Request $request) {
+    if ($request->session()->missing('usname')) {
+	return view('login', ['info'=>""]);
+    } else {
+        #return view('profile', ['user'=>$request->session()->get("usname")]);
+        //return User::go_view($request);
+        return User::go_view($request);
+    }
+    //return view('index');
+});
+
+Route::post('/', function (Request $request) {
+    if ($request->session()->missing('users')) {
+        //Profile::login($request);
+        //dd($request);
+        $usname = $_POST['usname'];
+        $passwd = $_POST['passwd'];
+        //if (isset(['usname']))
+        if (User::authenticate($usname, $passwd)) {
+            $request->session()->put("usname", "$usname");
+	    # todolist
+            $request->session()->put("todolist", ["php", "laravel"]);
+	    # calories counter
+            $request->session()->put("foods", ["apple"=>["cals"=>95]]);
+            $request->session()->put("foods_ate", []);
+	    # shop
+            $request->session()->put("cart", []);
+            return User::go_view($request);
+            #return view('profile', ['user'=>$request->session()->get("usname")]);
+        } else {
+            return view("login", ['info'=>"Invalid data"]);
+            //return View::make('login', array('info' => 'Invalid data'));
+        }
+    } else {
+        return User::go_view($request);
+        #return view('profile', ['user'=>$request->session()->get("usname")]);
+    }
+});
+    
+Route::get('/profile', function (Request $request) {
+    if ($request->session()->missing('usname')) {
+        return Redirect::to('/login');
+    } else {
+        #return view('profile', ['user'=>$request->session()->get("usname")]);
+        //return User::go_view($request);
+        return User::go_view($request);
+    }
+});
+
+Route::post('/profile', function (Request $request) {
+    if ($request->session()->missing('users')) {
+        //Profile::login($request);
+        //dd($request);
+        $usname = $_POST['usname'];
+        $passwd = $_POST['passwd'];
+        //if (isset(['usname']))
+        if (User::authenticate($usname, $passwd)) {
+            $request->session()->put("usname", "$usname");
+	    # todolist
+            $request->session()->put("todolist", ["php", "laravel"]);
+	    # calories counter
+            $request->session()->put("foods", ["apple"=>["cals"=>95]]);
+            $request->session()->put("foods_ate", []);
+	    # shop
+            $request->session()->put("cart", []);
+            return User::go_view($request);
+            #return view('profile', ['user'=>$request->session()->get("usname")]);
+        } else {
+            return view("login", ['info'=>"Invalid data"]);
+            //return View::make('login', array('info' => 'Invalid data'));
+        }
+    } else {
+        return User::go_view($request);
+        #return view('profile', ['user'=>$request->session()->get("usname")]);
+    }
 });
 
 Route::get('/login', function (Request $request) {
@@ -89,42 +162,6 @@ Route::post('/calories_counter/add_cal', function (Request $request) {
     return Redirect::back();
 });
 
-Route::get('/profile', function (Request $request) {
-    if ($request->session()->missing('usname')) {
-        return Redirect::to('/login');
-    } else {
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-        return User::go_view($request);
-    }
-});
-
-Route::post('/profile', function (Request $request) {
-    if ($request->session()->missing('users')) {
-        //Profile::login($request);
-        //dd($request);
-        $usname = $_POST['usname'];
-        $passwd = $_POST['passwd'];
-        //if (isset(['usname']))
-        if (User::authenticate($usname, $passwd)) {
-            $request->session()->put("usname", "$usname");
-	    # todolist
-            $request->session()->put("todolist", ["php", "laravel"]);
-	    # calories counter
-            $request->session()->put("foods", ["apple"=>["cals"=>95]]);
-            $request->session()->put("foods_ate", []);
-	    # shop
-            $request->session()->put("cart", []);
-            return User::go_view($request);
-            #return view('profile', ['user'=>$request->session()->get("usname")]);
-        } else {
-            return view("login", ['info'=>"Invalid data"]);
-            //return View::make('login', array('info' => 'Invalid data'));
-        }
-    } else {
-        return User::go_view($request);
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-    }
-});
 
 
 Route::get('/logout', function (Request $request) {
