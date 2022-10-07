@@ -28,8 +28,8 @@ Route::post('/', function (Request $request) {
 	    # todolist
             $request->session()->put("todolist", ["php", "laravel"]);
 	    # calories counter
-            $request->session()->put("foods", ["apple"=>["cals"=>95]]);
-            $request->session()->put("foods_ate", []);
+            //$request->session()->put("foods", ["apple"=>["cals"=>95]]);
+            //$request->session()->put("foods_ate", []);
 	    # shop
             $request->session()->put("cart", []);
             return User::go_view($request);
@@ -43,7 +43,7 @@ Route::post('/', function (Request $request) {
         #return view('profile', ['user'=>$request->session()->get("usname")]);
     }
 });
-    
+
 Route::get('/profile', function (Request $request) {
     if ($request->session()->missing('usname')) {
         return Redirect::to('/login');
@@ -66,8 +66,8 @@ Route::post('/profile', function (Request $request) {
 	    # todolist
             $request->session()->put("todolist", ["php", "laravel"]);
 	    # calories counter
-            $request->session()->put("foods", ["apple"=>["cals"=>95]]);
-            $request->session()->put("foods_ate", []);
+            //$request->session()->put("foods", ["apple"=>["cals"=>95]]);
+            //t$request->session()->put("foods_ate", []);
 	    # shop
             $request->session()->put("cart", []);
             return User::go_view($request);
@@ -121,6 +121,7 @@ Route::get('/shop', function (Request $request) {
 });
 
 /* calories counter */
+/*
 Route::get('/calories_counter', function (Request $request) {
     #TODO
     return User::go_view($request, 'calories_counter');
@@ -161,7 +162,7 @@ Route::post('/calories_counter/add_cal', function (Request $request) {
     //return Profile::go_view($request);
     return Redirect::back();
 });
-
+*/
 
 
 Route::get('/logout', function (Request $request) {
