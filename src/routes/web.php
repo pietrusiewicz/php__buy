@@ -27,13 +27,12 @@ Route::post('/', function (Request $request) {
             $request->session()->put("usname", "$usname");
 	    # todolist
             $request->session()->put("todolist", ["php", "laravel"]);
-	    # calories counter
-            //$request->session()->put("foods", ["apple"=>["cals"=>95]]);
-            //$request->session()->put("foods_ate", []);
 	    # shop
             $request->session()->put("cart", []);
+        # finance_tracker 
+            $request->session()->put("bought_things", [['example', 12.0]]);
+        #
             return User::go_view($request);
-            #return view('profile', ['user'=>$request->session()->get("usname")]);
         } else {
             return view("login", ['info'=>"Invalid data"]);
             //return View::make('login', array('info' => 'Invalid data'));
@@ -44,6 +43,7 @@ Route::post('/', function (Request $request) {
     }
 });
 
+
 Route::get('/profile', function (Request $request) {
     if ($request->session()->missing('usname')) {
         return Redirect::to('/login');
@@ -53,7 +53,6 @@ Route::get('/profile', function (Request $request) {
         return User::go_view($request);
     }
 });
-
 Route::post('/profile', function (Request $request) {
     if ($request->session()->missing('users')) {
         //Profile::login($request);
@@ -67,11 +66,11 @@ Route::post('/profile', function (Request $request) {
             $request->session()->put("todolist", ["php", "laravel"]);
 #TODO
 #$request->session()->put("todolist", ["php"=>0, "laravel"=>0]);
-	    # calories counter
-            //$request->session()->put("foods", ["apple"=>["cals"=>95]]);
-            //t$request->session()->put("foods_ate", []);
 	    # shop
             $request->session()->put("cart", []);
+        # finance_tracker 
+            $request->session()->put("bought_things", [['example', 12.0]]);
+        #
             return User::go_view($request);
             #return view('profile', ['user'=>$request->session()->get("usname")]);
         } else {
@@ -129,55 +128,18 @@ Route::get('/item_list', function (Request $request) {
     return User::go_view($request, 'item_list');
 });
 
-
+/* finance tracker */
 Route::get('/finance_tracker', function (Request $request) {
     #TODO
     return User::go_view($request, 'finance_tracker');
 });
 
-/* calories counter */
-/*
-Route::get('/calories_counter', function (Request $request) {
-    #TODO
-    return User::go_view($request, 'calories_counter');
-});
-Route::post('/calories_counter/add_food', function (Request $request) {
-    $food = $_POST['food_name'];
-    $cals = $_POST['calories'];
-    $request->session()->push('foods', [$food=>["cals"=>intval($cals)]]);
-    //return Profile::go_view($request);
+Route::post('/finance_tracker/append_bought_thing', function (Request $request) {
+    $item = $_POST['item_name'];
+    $price = $_POST['price'];
+    $request->session()->push('bought_things', [$item,$price]);
     return Redirect::back();
 });
-Route::post('/calories_counter/del_food', function (Request $request) {
-    $r = $request->session();
-    $array = $r->get('foods');
-    $tl = delItemArray($array);
-
-    $r->forget('foods');
-    $r->put("foods", $tl);
-
-    return Redirect::back();
-});
-Route::post('/calories_counter/del_cal', function (Request $request) {
-    $r = $request->session();
-    $array = $r->get('ate_foods');
-    $tl = delItemArray($array);
-
-    $r->forget('ate_foods');
-    $r->put("ate_foods", $tl);
-
-    return Redirect::back();
-});
-Route::post('/calories_counter/add_cal', function (Request $request) {
-    $nr = $_POST['nr'];
-    $foods = $request->session()->get('foods');
-    if ($nr < count($foods)) {
-	$request->session()->push('ate_foods', $foods[$nr]);
-    }
-    //return Profile::go_view($request);
-    return Redirect::back();
-});
-*/
 
 
 Route::get('/logout', function (Request $request) {
