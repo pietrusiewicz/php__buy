@@ -65,6 +65,8 @@ Route::post('/profile', function (Request $request) {
             $request->session()->put("usname", "$usname");
 	    # todolist
             $request->session()->put("todolist", ["php", "laravel"]);
+#TODO
+#$request->session()->put("todolist", ["php"=>0, "laravel"=>0]);
 	    # calories counter
             //$request->session()->put("foods", ["apple"=>["cals"=>95]]);
             //t$request->session()->put("foods_ate", []);
@@ -118,6 +120,19 @@ Route::post('/todolist/add_item', function (Request $request) {
 Route::get('/shop', function (Request $request) {
     #TODO
     return User::go_view($request, 'shop');
+});
+
+/* item_list */
+// like room database
+Route::get('/item_list', function (Request $request) {
+    #TODO
+    return User::go_view($request, 'item_list');
+});
+
+
+Route::get('/finance_tracker', function (Request $request) {
+    #TODO
+    return User::go_view($request, 'finance_tracker');
 });
 
 /* calories counter */
