@@ -1,5 +1,5 @@
 <header>
-    <i>username: {{ $user }}</i>
+    <i>username: <b>{{ $user }}</b></i>
     <a href="/todolist/">Todolist</a> 
     <a href="/shop/">Shop</a> 
     <a href="/finance_tracker/">Finance_tracker</a> 

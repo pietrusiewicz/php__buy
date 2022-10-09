@@ -26,7 +26,7 @@ Route::post('/', function (Request $request) {
         if (User::authenticate($usname, $passwd)) {
             $request->session()->put("usname", "$usname");
 	    # todolist
-            $request->session()->put("todolist", ["php", "laravel"]);
+            $request->session()->put("todolist", [["php",0],["laravel", 0]]);
 	    # shop
             $request->session()->put("cart", []);
         # finance_tracker 
@@ -63,7 +63,7 @@ Route::post('/profile', function (Request $request) {
         if (User::authenticate($usname, $passwd)) {
             $request->session()->put("usname", "$usname");
 	    # todolist
-            $request->session()->put("todolist", ["php", "laravel"]);
+            $request->session()->put("todolist", [["php",0],["laravel", 0]]);
 #TODO
 #$request->session()->put("todolist", ["php"=>0, "laravel"=>0]);
 	    # shop
@@ -108,9 +108,22 @@ Route::post('/todolist/del_item', function (Request $request) {
     return Redirect::back();
 });
 
+Route::get('/todolist/tl_toggle/{id}', function(Request $request, $id) {
+    $r = $request->session();
+    $tl = $r->get('todolist');
+    //if ($tl[$id][1]) {
+    $tl[$id][1] = !$tl[$id][1];
+    //} else {
+	//    $tl[$td][1]=1;
+    //}
+    $r->forget('todolist');
+    $r->put("todolist", $tl);
+
+    return Redirect::back();
+});
 Route::post('/todolist/add_item', function (Request $request) {
     $item = $_POST['item_name'];
-    $request->session()->push('todolist', $item);
+    $request->session()->push('todolist', [$item, 0]);
     //return Profile::go_view($request);
     return Redirect::back();
 });

@@ -10,7 +10,13 @@
         @for ($i=0; $i<count($todolist); $i++) 
             <form method='post' action='del_item/'>
                 @csrf
-                <li>{{$todolist[$i]}}<input type='submit' value='-' name='{{ $i }}'/></li>
+		@if ($todolist[$i][1])
+			<li style="background:green">
+		@else
+			<li style="background:red">
+		@endif
+		<a href="tl_toggle/{{$i}}/">{{$todolist[$i][0]}}</a>
+		<input type='submit' value='-' name='{{$i}}'/></li>
             </form>
 
         @endfor
