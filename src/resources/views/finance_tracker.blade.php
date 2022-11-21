@@ -5,8 +5,9 @@
 </head>
 <body>
     @include('profile')
-    <h1>track your finances</h1>
+    <h1>track your finances<a href="/finance_tracker/edit"><sub style="font-size: 12px">edit</sub></a></h1>
     <h3>Your bought things:</h3>
+    @if ($bought_things!=null)
     <ol>
         @foreach ($bought_things as $thing)
         <li>
@@ -16,14 +17,19 @@
         </li>
 
         @endforeach
+    @else
+        <ol>
+    @endif
         
-        <form method="post" action="append_bought_thing/">
+        <form method="post" action="append_bought_thing/edit">
+#TODO
             @csrf
             <li><input type="text" name="item_name"/>
             <input type="number" name="price"/>
             <input type="submit" value="+"/></li>
         </form>
     </ol>
+
     <h4>Summary: 
         <?php  
         function index2nd($arr1) {

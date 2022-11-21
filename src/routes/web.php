@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 require_once 'funcs.php';
 require_once 'User.php';
 
-Route::get('/', function (Request $request) {
+# for less spaghetti code please set command in vim :set foldmethod=marker
+# starting procedures
+Route::get('/', function (Request $request) { # {{{
     if ($request->session()->missing('usname')) {
 	return view('login', ['info'=>""]);
     } else {
@@ -42,9 +44,9 @@ Route::post('/', function (Request $request) {
         #return view('profile', ['user'=>$request->session()->get("usname")]);
     }
 });
+# }}}
 
-
-Route::get('/profile', function (Request $request) {
+Route::get('/profile', function (Request $request) { # {{{
     if ($request->session()->missing('usname')) {
         return Redirect::to('/login');
     } else {
@@ -81,15 +83,15 @@ Route::post('/profile', function (Request $request) {
         return User::go_view($request);
         #return view('profile', ['user'=>$request->session()->get("usname")]);
     }
-});
+}); # }}}
 
-Route::get('/login', function (Request $request) {
+Route::get('/login', function (Request $request) { # {{{
     #dd($request);
     $input = $request->only(['usname', 'passwd']);
     $token = $request->session()->token();
     #return view('login');
     return view('login', ['info'=>""]);
-});
+}); # }}}
 
 /* todolist */
 Route::get('/todolist', function (Request $request) {
@@ -152,6 +154,24 @@ Route::post('/finance_tracker/append_bought_thing', function (Request $request) 
     $price = $_POST['price'];
     $request->session()->push('bought_things', [$item,$price]);
     return Redirect::back();
+});
+
+Route::get('/finance_tracker/edit', function (Request $request) {
+    #TODO
+    return User::go_view($request, 'finance_tracker_editor');
+});
+
+Route::get('/finance_tracker/delete/{i?}', function (Request $request, $i=null) {
+    if ($i==null) {
+        return Redirect::back();
+    } else {
+    $items = $request->get('bought_things');
+    unset($items[$i]);
+    $request->session()->forget('bought_things');
+    $request->session()->put("bought_things", $items);
+    //$request->session()->push('bought_things', [$item,$price]);
+    return Redirect::back();
+    }
 });
 
 
