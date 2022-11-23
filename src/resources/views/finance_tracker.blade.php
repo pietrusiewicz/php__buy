@@ -21,7 +21,7 @@
         <ol>
     @endif
         
-        <form method="post" action="append_bought_thing/edit">
+        <form method="post" action="append_bought_thing">
 #TODO
             @csrf
             <li><input type="text" name="item_name"/>
