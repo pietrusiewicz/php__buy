@@ -94,7 +94,14 @@ Route::get('/login', function (Request $request) { # {{{
 }); # }}}
 
 /* todolist */
-include "todolist/todolist.php";
+Route::get('/todolist', function (Request $request) {
+    $todolist = $request->session()->get('todolist');
+    return User::go_view($request, 'todolist');
+});
+
+include "todolist/append_item.php";
+include "todolist/delete_item.php";
+include "todolist/mark_item.php";
 
 /* shop */
 Route::get('/shop', function (Request $request) {
