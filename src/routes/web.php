@@ -117,7 +117,13 @@ Route::get('/item_list', function (Request $request) {
 });
 
 /* finance tracker */
-include "finance_tracker/finance_tracker.php";
+Route::get('/finance_tracker', function (Request $request) {
+    return User::go_view($request, 'finance_tracker');
+});
+//include "finance_tracker/finance_tracker.php";
+include "finance_tracker/edit.php";
+include "finance_tracker/append_bought_thing.php";
+include "finance_tracker/delete.php";
 
 Route::get('/logout', function (Request $request) {
     $request->session()->forget('usname');
