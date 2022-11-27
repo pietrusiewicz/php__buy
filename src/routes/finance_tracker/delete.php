@@ -1,17 +1,19 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+require_once __DIR__ . '/../funcs.php';
 
-Route::get('/finance_tracker/delete/{i?}', function (Request $request, $i=null) {
-    if ($i==null) {
-        return Redirect::back();
-    } else {
-    $items = $request->get('bought_things');
-    unset($items[$i]);
-    $request->session()->forget('bought_things');
-    $request->session()->put("bought_things", $items);
-    //$request->session()->push('bought_things', [$item,$price]);
-    return Redirect::back();
+Route::get('/finance_tracker/delete/{i}', function (Request $request, $i) {
+    $r = $request->session();
+    $items = $r->get('bought_things');
+    //echo $items;
+    $r->forget('bought_things');
+    $r->put("bought_things", []);
+	for ($j=0; $j<count($items); $j++) {
+        if (!($i==$j)) {
+			$r->push("bought_things", $items[$j]);
+		}
     }
+    return Redirect::back();
 });
 ?>

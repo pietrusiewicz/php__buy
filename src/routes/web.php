@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 require_once 'funcs.php';
+//require_once 'models.php';
 require_once 'User.php';
 
 # for less spaghetti code please set command in vim :set foldmethod=marker
@@ -66,8 +67,10 @@ Route::post('/profile', function (Request $request) {
             $request->session()->put("usname", "$usname");
 	    # todolist
             $request->session()->put("todolist", [["php",0],["laravel", 0]]);
-#TODO
-#$request->session()->put("todolist", ["php"=>0, "laravel"=>0]);
+            //$juzer = 
+            //$tl = TodoList::create($user, ['php', 0]);
+            //$tl->item = ["php", 0];
+
 	    # shop
             $request->session()->put("cart", []);
         # finance_tracker 

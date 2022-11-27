@@ -14,7 +14,9 @@
         <li>
             <input type="text" name="name{{$i}}" value="{{$bought_things[$i][0]}}"> &nbsp
             <input type="number" name="nr{{$i}}" value="{{$bought_things[$i][1]}}">
-            <a href="/finance_tracker/delete/{{$i}}"><input type="button" value="-"/></a>
+            <a href="/finance_tracker/delete/{{$i}}">
+                <input type="button" value="-"/>
+            </a>
         </li>
 
         @endfor

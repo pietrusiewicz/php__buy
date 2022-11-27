@@ -1,6 +1,9 @@
 <?php 
+//namespace App\Models;
+//use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+
 
 class User {
     public static function all() {

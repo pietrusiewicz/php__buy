@@ -7,7 +7,7 @@
     @include('profile')
     <h1>track your finances<a href="/finance_tracker/edit"><sub style="font-size: 12px">edit</sub></a></h1>
     <h3>Your bought things:</h3>
-    @if ($bought_things!=null)
+    @if ($bought_things)
     <ol>
         @foreach ($bought_things as $thing)
         <li>
