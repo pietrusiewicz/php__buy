@@ -18,11 +18,10 @@
 
         @endforeach
     @else
-        <ol>
+    <ol>
     @endif
         
-        <form method="post" action="append_bought_thing">
-#TODO
+        <form method="post" action="/finance_tracker/append_bought_thing">
             @csrf
             <li><input type="text" name="item_name"/>
             <input type="number" name="price"/>
