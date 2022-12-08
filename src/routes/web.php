@@ -1,5 +1,12 @@
 <?php
+/*
+Route::get('/', function () {
+	return view('welcome');
+});
 
+Route::get('/pizzas', [App\Http\Controllers\PizzaController::class, 'index']);
+Route::get('/pizzas/{id}', [App\Http\Controllers\PizzaController::class, 'show']);
+ */
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 require_once 'funcs.php';
@@ -97,29 +104,24 @@ Route::get('/login', function (Request $request) { # {{{
 }); # }}}
 
 /* todolist */
+
+/*
 Route::get('/todolist', function (Request $request) {
     $todolist = $request->session()->get('todolist');
     return User::go_view($request, 'todolist');
 });
+*/
+
+Route::get('/todolist', [App\Http\Controllers\TlController::class, 'index']);
+//Route::post('/todolist/add_item', [App\Http\Controllers\TlController::class, 'append']);
 
 include "todolist/append_item.php";
 include "todolist/delete_item.php";
 include "todolist/mark_item.php";
 
-/* shop */
-Route::get('/shop', function (Request $request) {
-    #TODO
-    return User::go_view($request, 'shop');
-});
-
-/* item_list */
-// like room database
-Route::get('/item_list', function (Request $request) {
-    #TODO
-    return User::go_view($request, 'item_list');
-});
 
 /* finance tracker */
+
 Route::get('/finance_tracker', function (Request $request) {
     return User::go_view($request, 'finance_tracker');
 });

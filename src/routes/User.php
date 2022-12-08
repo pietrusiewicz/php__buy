@@ -21,12 +21,14 @@ class User {
     }
 
     public static function get_data(Request $request) {
-        $username = $request->session()->get("usname");
-        $todolist = $request->session()->get('todolist');
-        $foods = $request->session()->get('foods');
-        $ate_foods = $request->session()->get('ate_foods');
-        $bought_things = $request->session()->get('bought_things');
-        return ['user'=>$username, "todolist"=>$todolist, "bought_things"=>$bought_things, "i"=>0];
+      $r = $request->session();
+        $username = $r->get("usname");
+	$todolist = $r->get('todolist');
+	$foods = $r->get('foods');
+	$ate_foods = $r->get('ate_foods');
+	$bought_things = $r->get('bought_things');
+	$data = ['user'=>$username, "todolist"=>$todolist, "bought_things"=>$bought_things, "i"=>0];
+      return ['user'=>$username, "todolist"=>$todolist, "bought_things"=>$bought_things, "i"=>0];
     }
     public static function go_view(Request $request, $view_name='profile') {
 
