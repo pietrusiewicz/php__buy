@@ -11,7 +11,7 @@ class TlController extends Controller
     $data = self::get_data();
     return view("todolist", $data);
   }
-
+  /*
   public function append(Request $request) {
     $item = $_POST['item_name'];
     $request->session()->push('todolist', [$item, 0]);
@@ -20,6 +20,7 @@ class TlController extends Controller
     //return view("todolist", $data);
     return redirect('/todolist');
   }
+   */
   public function get_data(Request $request) {
     $r = $request->session();
       $username = $r->get("usname");

@@ -64,6 +64,8 @@ Route::get('/profile', function (Request $request) { # {{{
     }
 });
 Route::post('/profile', function (Request $request) {
+    return User::go_view($request);
+    /*
     if ($request->session()->missing('users')) {
         //Profile::login($request);
         //dd($request);
@@ -74,9 +76,6 @@ Route::post('/profile', function (Request $request) {
             $request->session()->put("usname", "$usname");
 	    # todolist
             $request->session()->put("todolist", [["php",0],["laravel", 0]]);
-            //$juzer = 
-            //$tl = TodoList::create($user, ['php', 0]);
-            //$tl->item = ["php", 0];
 
 	    # shop
             $request->session()->put("cart", []);
@@ -93,6 +92,7 @@ Route::post('/profile', function (Request $request) {
         return User::go_view($request);
         #return view('profile', ['user'=>$request->session()->get("usname")]);
     }
+    */
 }); # }}}
 
 Route::get('/login', function (Request $request) { # {{{

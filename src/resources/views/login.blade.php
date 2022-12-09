@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>login</h1>
-<form method="POST" action="/profile">
+<form method="POST" action="/">
     @csrf
     <input type="text" name="usname"/>
     <input type="password" name="passwd"/>

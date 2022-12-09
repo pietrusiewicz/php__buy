@@ -28,11 +28,11 @@ class User {
 	$ate_foods = $r->get('ate_foods');
 	$bought_things = $r->get('bought_things');
 	$data = ['user'=>$username, "todolist"=>$todolist, "bought_things"=>$bought_things, "i"=>0];
-      return ['user'=>$username, "todolist"=>$todolist, "bought_things"=>$bought_things, "i"=>0];
+      return $data;
     }
     public static function go_view(Request $request, $view_name='profile') {
 
         return view($view_name, self::get_data($request));
-    
+
     }
 }
