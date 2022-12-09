@@ -15,21 +15,11 @@ require_once 'User.php';
 
 # for less spaghetti code please set command in vim :set foldmethod=marker
 # starting procedures
-Route::get('/', function (Request $request) { # {{{
-    if ($request->session()->missing('usname')) {
-	return view('login', ['info'=>""]);
-    } else {
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-        //return User::go_view($request);
-        return User::go_view($request);
-    }
-    //return view('index');
-});
+Route::get('/', [App\Http\Controllers\LoginController::class, 'display_website']);
+//Route::post('/', [App\Http\Controllers\LoginController::class, 'login']) {
 
 Route::post('/', function (Request $request) {
     if ($request->session()->missing('users')) {
-        //Profile::login($request);
-        //dd($request);
         $usname = $_POST['usname'];
         $passwd = $_POST['passwd'];
         //if (isset(['usname']))
@@ -52,49 +42,8 @@ Route::post('/', function (Request $request) {
         #return view('profile', ['user'=>$request->session()->get("usname")]);
     }
 });
+
 # }}}
-
-Route::get('/profile', function (Request $request) { # {{{
-    if ($request->session()->missing('usname')) {
-        return Redirect::to('/login');
-    } else {
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-        //return User::go_view($request);
-        return User::go_view($request);
-    }
-});
-Route::post('/profile', function (Request $request) {
-    return User::go_view($request);
-    /*
-    if ($request->session()->missing('users')) {
-        //Profile::login($request);
-        //dd($request);
-        $usname = $_POST['usname'];
-        $passwd = $_POST['passwd'];
-        //if (isset(['usname']))
-        if (User::authenticate($usname, $passwd)) {
-            $request->session()->put("usname", "$usname");
-	    # todolist
-            $request->session()->put("todolist", [["php",0],["laravel", 0]]);
-
-	    # shop
-            $request->session()->put("cart", []);
-        # finance_tracker 
-            $request->session()->put("bought_things", [['example', 12.0]]);
-        #
-            return User::go_view($request);
-            #return view('profile', ['user'=>$request->session()->get("usname")]);
-        } else {
-            return view("login", ['info'=>"Invalid data"]);
-            //return View::make('login', array('info' => 'Invalid data'));
-        }
-    } else {
-        return User::go_view($request);
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-    }
-    */
-}); # }}}
-
 Route::get('/login', function (Request $request) { # {{{
     #dd($request);
     $input = $request->only(['usname', 'passwd']);
@@ -104,13 +53,6 @@ Route::get('/login', function (Request $request) { # {{{
 }); # }}}
 
 /* todolist */
-
-/*
-Route::get('/todolist', function (Request $request) {
-    $todolist = $request->session()->get('todolist');
-    return User::go_view($request, 'todolist');
-});
-*/
 
 Route::get('/todolist', [App\Http\Controllers\TlController::class, 'index']);
 //Route::post('/todolist/add_item', [App\Http\Controllers\TlController::class, 'append']);
