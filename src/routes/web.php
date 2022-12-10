@@ -55,19 +55,17 @@ Route::get('/login', function (Request $request) { # {{{
 /* todolist */
 
 Route::get('/todolist', [App\Http\Controllers\TlController::class, 'index']);
-//Route::post('/todolist/add_item', [App\Http\Controllers\TlController::class, 'append']);
+Route::post('/todolist/add_item', [App\Http\Controllers\TlController::class, 'add_item']);
+//Route::post('/todolist/del_item', [App\Http\Controllers\TlController::class, 'del_item']);
 
-include "todolist/append_item.php";
+//include "todolist/append_item.php";
 include "todolist/delete_item.php";
 include "todolist/mark_item.php";
 
 
 /* finance tracker */
 
-Route::get('/finance_tracker', function (Request $request) {
-    return User::go_view($request, 'finance_tracker');
-});
-//include "finance_tracker/finance_tracker.php";
+Route::get('/finance_tracker', [App\Http\Controllers\FtController::class, 'index']);
 include "finance_tracker/edit.php";
 include "finance_tracker/append_bought_thing.php";
 include "finance_tracker/delete.php";
