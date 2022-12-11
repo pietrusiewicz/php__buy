@@ -87,3 +87,21 @@ That should keep a small info pane open in your terminal (which you can exit wit
 The current version of Laravel (8 as of today) uses MailHog as the default application for testing email sending and general SMTP work during local development. Using the provided Docker Hub image, getting an instance set up and ready is simple and straight-forward. The service is included in the `docker-compose.yml` file, and spins up alongside the webserver and database services.
 
 To see the dashboard and view any emails coming through the system, visit [localhost:8025](http://localhost:8025) after running `docker-compose up -d site`.
+
+## Visiting the documentation
+<ol> The Basics
+	<li>Routing [0]</li>
+	<li>Middleware [0]</li>
+	<li>CSRF Protection [0]</li>
+	<li>Controllers [0]</li>
+	<li>Requests [0]</li>
+	<li>Responses [0]</li>
+	<li>Views [0]</li>
+	<li>Blade Templates [0]</li>
+	<li>Asset Bundling [0]</li>
+	<li>URL Generation [0]</li>
+	<li>Session [0]</li>
+	<li>Validation [0]</li>
+	<li>Error Handling [0]</li>
+	<li>Logging [0]</li>
+</ol>
