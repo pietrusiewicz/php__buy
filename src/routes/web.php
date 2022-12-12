@@ -9,13 +9,15 @@ Route::get('/pizzas/{id}', [App\Http\Controllers\PizzaController::class, 'show']
  */
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TlController;
 require_once 'funcs.php';
 //require_once 'models.php';
 require_once 'User.php';
 
 # for less spaghetti code please set command in vim :set foldmethod=marker
 # starting procedures
-Route::get('/', [App\Http\Controllers\LoginController::class, 'display_website']);
+Route::get('/', [LoginController::class, 'display_website']);
 //Route::post('/', [App\Http\Controllers\LoginController::class, 'login']) {
 
 Route::post('/', function (Request $request) {
@@ -54,8 +56,8 @@ Route::get('/login', function (Request $request) { # {{{
 
 /* todolist */
 
-Route::get('/todolist', [App\Http\Controllers\TlController::class, 'index']);
-Route::post('/todolist/add_item', [App\Http\Controllers\TlController::class, 'add_item']);
+Route::get('/todolist', [TlController::class, 'index']);
+Route::post('/todolist/add_item', [TlController::class, 'add_item']);
 //Route::post('/todolist/del_item', [App\Http\Controllers\TlController::class, 'del_item']);
 
 //include "todolist/append_item.php";
