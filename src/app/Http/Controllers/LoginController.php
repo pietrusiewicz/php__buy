@@ -46,10 +46,15 @@ class LoginController extends Controller
           $r = $request->session();
             $username = $r->get("usname");
 	    $todolist = $r->get('todolist');
-	    $foods = $r->get('foods');
-	    $ate_foods = $r->get('ate_foods');
 	    $bought_things = $r->get('bought_things');
 	    $data = ['user'=>$username, "todolist"=>$todolist, "bought_things"=>$bought_things, "i"=>0];
         return view('profile', $data);
-    }
+	}
+
+	public function logout(Request $request) {
+		$request->session()->forget('usname');
+		$request->session()->forget('todolist');
+		return redirect('/login');
+
+	}
 }

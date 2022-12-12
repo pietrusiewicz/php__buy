@@ -70,13 +70,15 @@ include "finance_tracker/edit.php";
 include "finance_tracker/append_bought_thing.php";
 include "finance_tracker/delete.php";
 
-Route::get('/logout', function (Request $request) {
+Route::get('/logout', [App\Http\Controllers\LoginController::class, 'logout']);
+
+/*Route::get('/logout', function (Request $request) {
     $request->session()->forget('usname');
     $request->session()->forget('todolist');
-    $request->session()->forget('foods');
+    //$request->session()->forget('foods');
     return Redirect::to('/login');
 });
-
+ */
 Route::get('/user/{name?}', function ($name=null) {
     return "$name";
 });
