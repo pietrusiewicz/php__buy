@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TlController;
+use App\Http\Controllers\FtController;
 require_once 'funcs.php';
-//require_once 'models.php';
+//require_once 'models.php'Login;
 require_once 'User.php';
 
 # for less spaghetti code please set command in vim :set foldmethod=marker
@@ -46,6 +47,9 @@ Route::post('/', function (Request $request) {
 });
 
 # }}}
+
+Route::get('/sandbox', [LoginController::class, 'show']);
+
 Route::get('/login', function (Request $request) { # {{{
     #dd($request);
     $input = $request->only(['usname', 'passwd']);
@@ -53,6 +57,8 @@ Route::get('/login', function (Request $request) { # {{{
     #return view('login');
     return view('login', ['info'=>""]);
 }); # }}}
+Route::match(['get', 'post'], '/register', [LoginController::class, 'register']);
+
 
 /* todolist */
 
@@ -67,12 +73,12 @@ include "todolist/mark_item.php";
 
 /* finance tracker */
 
-Route::get('/finance_tracker', [App\Http\Controllers\FtController::class, 'index']);
+Route::get('/finance_tracker', [FtController::class, 'index']);
 include "finance_tracker/edit.php";
 include "finance_tracker/append_bought_thing.php";
 include "finance_tracker/delete.php";
 
-Route::get('/logout', [App\Http\Controllers\LoginController::class, 'logout']);
+Route::get('/logout', [LoginController::class, 'logout']);
 
 /*Route::get('/logout', function (Request $request) {
     $request->session()->forget('usname');

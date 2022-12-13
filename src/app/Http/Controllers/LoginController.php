@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -13,6 +14,28 @@ class LoginController extends Controller
 		//return User::go_view($request);
 		return self::go_view($request);
 	    }
+	}
+	public function register(Request $request, User $user) {
+		if (isset($_POST['usname']) && isset($_POST['passwd'])) {
+			$usname = $_POST['usname'];
+			$passwd = $_POST['passwd'];
+			//$user = new User();
+			//$user->name = $usname;
+			//$user->password = $passwd;
+			User::create(array(
+				"name"=>$usname,
+				"email"=>"",
+				"password"=>$passwd,
+			));
+			if (($_POST['usname'] != '')  && ($_POST['passwd'] != '')) {
+				return redirect('/login');
+			} else {
+				return view('register');
+				
+			}
+		} else {
+			return view('register');
+		}
 	}
 	/*
 	public function login(Request $request) {
@@ -48,7 +71,7 @@ class LoginController extends Controller
 	    $todolist = $r->get('todolist');
 	    $bought_things = $r->get('bought_things');
 	    $data = ['user'=>$username, "todolist"=>$todolist, "bought_things"=>$bought_things, "i"=>0];
-        return view('profile', $data);
+	  return view('profile', $data);
 	}
 
 	public function logout(Request $request) {
@@ -56,5 +79,8 @@ class LoginController extends Controller
 		$request->session()->forget('todolist');
 		return redirect('/login');
 
+	}
+	public function show(Request $request, User $user) {
+		return $user;
 	}
 }
