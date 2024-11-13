@@ -1,27 +1,28 @@
 <?php
+/*
+Route::get('/', function () {
+	return view('welcome');
+});
 
+Route::get('/pizzas', [App\Http\Controllers\PizzaController::class, 'index']);
+Route::get('/pizzas/{id}', [App\Http\Controllers\PizzaController::class, 'show']);
+ */
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TlController;
+use App\Http\Controllers\FtController;
 require_once 'funcs.php';
+//require_once 'models.php'Login;
 require_once 'User.php';
 
 # for less spaghetti code please set command in vim :set foldmethod=marker
 # starting procedures
-Route::get('/', function (Request $request) { # {{{
-    if ($request->session()->missing('usname')) {
-	return view('login', ['info'=>""]);
-    } else {
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-        //return User::go_view($request);
-        return User::go_view($request);
-    }
-    //return view('index');
-});
+Route::get('/', [LoginController::class, 'display_website']);
+//Route::post('/', [App\Http\Controllers\LoginController::class, 'login']) {
 
 Route::post('/', function (Request $request) {
     if ($request->session()->missing('users')) {
-        //Profile::login($request);
-        //dd($request);
         $usname = $_POST['usname'];
         $passwd = $_POST['passwd'];
         //if (isset(['usname']))
@@ -44,46 +45,10 @@ Route::post('/', function (Request $request) {
         #return view('profile', ['user'=>$request->session()->get("usname")]);
     }
 });
+
 # }}}
 
-Route::get('/profile', function (Request $request) { # {{{
-    if ($request->session()->missing('usname')) {
-        return Redirect::to('/login');
-    } else {
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-        //return User::go_view($request);
-        return User::go_view($request);
-    }
-});
-Route::post('/profile', function (Request $request) {
-    if ($request->session()->missing('users')) {
-        //Profile::login($request);
-        //dd($request);
-        $usname = $_POST['usname'];
-        $passwd = $_POST['passwd'];
-        //if (isset(['usname']))
-        if (User::authenticate($usname, $passwd)) {
-            $request->session()->put("usname", "$usname");
-	    # todolist
-            $request->session()->put("todolist", [["php",0],["laravel", 0]]);
-#TODO
-#$request->session()->put("todolist", ["php"=>0, "laravel"=>0]);
-	    # shop
-            $request->session()->put("cart", []);
-        # finance_tracker 
-            $request->session()->put("bought_things", [['example', 12.0]]);
-        #
-            return User::go_view($request);
-            #return view('profile', ['user'=>$request->session()->get("usname")]);
-        } else {
-            return view("login", ['info'=>"Invalid data"]);
-            //return View::make('login', array('info' => 'Invalid data'));
-        }
-    } else {
-        return User::go_view($request);
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-    }
-}); # }}}
+Route::get('/sandbox', [LoginController::class, 'show']);
 
 Route::get('/login', function (Request $request) { # {{{
     #dd($request);
@@ -92,96 +57,36 @@ Route::get('/login', function (Request $request) { # {{{
     #return view('login');
     return view('login', ['info'=>""]);
 }); # }}}
+Route::match(['get', 'post'], '/register', [LoginController::class, 'register']);
+
 
 /* todolist */
-Route::get('/todolist', function (Request $request) {
-    $todolist = $request->session()->get('todolist');
-    return User::go_view($request, 'todolist');
-});
 
-Route::post('/todolist/del_item', function (Request $request) {
-    $r = $request->session();
-    $todolist = $r->get('todolist');
-    $tl = delItemArray($todolist);
+Route::get('/todolist', [TlController::class, 'index']);
+Route::post('/todolist/add_item', [TlController::class, 'add_item']);
+//Route::post('/todolist/del_item', [App\Http\Controllers\TlController::class, 'del_item']);
 
-    $r->forget('todolist');
-    $r->put("todolist", $tl);
+//include "todolist/append_item.php";
+include "todolist/delete_item.php";
+include "todolist/mark_item.php";
 
-    return Redirect::back();
-});
-
-Route::get('/todolist/tl_toggle/{id}', function(Request $request, $id) {
-    $r = $request->session();
-    $tl = $r->get('todolist');
-    //if ($tl[$id][1]) {
-    $tl[$id][1] = !$tl[$id][1];
-    //} else {
-	//    $tl[$td][1]=1;
-    //}
-    $r->forget('todolist');
-    $r->put("todolist", $tl);
-
-    return Redirect::back();
-});
-Route::post('/todolist/add_item', function (Request $request) {
-    $item = $_POST['item_name'];
-    $request->session()->push('todolist', [$item, 0]);
-    //return Profile::go_view($request);
-    return Redirect::back();
-});
-
-/* shop */
-Route::get('/shop', function (Request $request) {
-    #TODO
-    return User::go_view($request, 'shop');
-});
-
-/* item_list */
-// like room database
-Route::get('/item_list', function (Request $request) {
-    #TODO
-    return User::go_view($request, 'item_list');
-});
 
 /* finance tracker */
-Route::get('/finance_tracker', function (Request $request) {
-    #TODO
-    return User::go_view($request, 'finance_tracker');
-});
 
-Route::post('/finance_tracker/append_bought_thing', function (Request $request) {
-    $item = $_POST['item_name'];
-    $price = $_POST['price'];
-    $request->session()->push('bought_things', [$item,$price]);
-    return Redirect::back();
-});
+Route::get('/finance_tracker', [FtController::class, 'index']);
+include "finance_tracker/edit.php";
+include "finance_tracker/append_bought_thing.php";
+include "finance_tracker/delete.php";
 
-Route::get('/finance_tracker/edit', function (Request $request) {
-    #TODO
-    return User::go_view($request, 'finance_tracker_editor');
-});
+Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::get('/finance_tracker/delete/{i?}', function (Request $request, $i=null) {
-    if ($i==null) {
-        return Redirect::back();
-    } else {
-    $items = $request->get('bought_things');
-    unset($items[$i]);
-    $request->session()->forget('bought_things');
-    $request->session()->put("bought_things", $items);
-    //$request->session()->push('bought_things', [$item,$price]);
-    return Redirect::back();
-    }
-});
-
-
-Route::get('/logout', function (Request $request) {
+/*Route::get('/logout', function (Request $request) {
     $request->session()->forget('usname');
     $request->session()->forget('todolist');
-    $request->session()->forget('foods');
+    //$request->session()->forget('foods');
     return Redirect::to('/login');
 });
-
+ */
 Route::get('/user/{name?}', function ($name=null) {
     return "$name";
 });

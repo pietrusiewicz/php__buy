@@ -1,110 +1,11 @@
 <?php
-/*
-Route::get('/', function () {
-	return view('welcome');
-});
-
-Route::get('/pizzas', [App\Http\Controllers\PizzaController::class, 'index']);
-Route::get('/pizzas/{id}', [App\Http\Controllers\PizzaController::class, 'show']);
- */
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TlController;
-use App\Http\Controllers\FtController;
-require_once 'funcs.php';
-//require_once 'models.php'Login;
-require_once 'User.php';
+use App\Http\Controllers\PageController;
 
-# for less spaghetti code please set command in vim :set foldmethod=marker
-# starting procedures
-Route::get('/', [LoginController::class, 'display_website']);
-//Route::post('/', [App\Http\Controllers\LoginController::class, 'login']) {
-
-Route::post('/', function (Request $request) {
-    if ($request->session()->missing('users')) {
-        $usname = $_POST['usname'];
-        $passwd = $_POST['passwd'];
-        //if (isset(['usname']))
-        if (User::authenticate($usname, $passwd)) {
-            $request->session()->put("usname", "$usname");
-	    # todolist
-            $request->session()->put("todolist", [["php",0],["laravel", 0]]);
-	    # shop
-            $request->session()->put("cart", []);
-        # finance_tracker 
-            $request->session()->put("bought_things", [['example', 12.0]]);
-        #
-            return User::go_view($request);
-        } else {
-            return view("login", ['info'=>"Invalid data"]);
-            //return View::make('login', array('info' => 'Invalid data'));
-        }
-    } else {
-        return User::go_view($request);
-        #return view('profile', ['user'=>$request->session()->get("usname")]);
-    }
-});
-
-# }}}
-
-Route::get('/sandbox', [LoginController::class, 'show']);
-
-Route::get('/login', function (Request $request) { # {{{
-    #dd($request);
-    $input = $request->only(['usname', 'passwd']);
-    $token = $request->session()->token();
-    #return view('login');
-    return view('login', ['info'=>""]);
-}); # }}}
-Route::match(['get', 'post'], '/register', [LoginController::class, 'register']);
-
-
-/* todolist */
-
-Route::get('/todolist', [TlController::class, 'index']);
-Route::post('/todolist/add_item', [TlController::class, 'add_item']);
-//Route::post('/todolist/del_item', [App\Http\Controllers\TlController::class, 'del_item']);
-
-//include "todolist/append_item.php";
-include "todolist/delete_item.php";
-include "todolist/mark_item.php";
-
-
-/* finance tracker */
-
-Route::get('/finance_tracker', [FtController::class, 'index']);
-include "finance_tracker/edit.php";
-include "finance_tracker/append_bought_thing.php";
-include "finance_tracker/delete.php";
-
-Route::get('/logout', [LoginController::class, 'logout']);
-
-/*Route::get('/logout', function (Request $request) {
-    $request->session()->forget('usname');
-    $request->session()->forget('todolist');
-    //$request->session()->forget('foods');
-    return Redirect::to('/login');
-});
- */
-Route::get('/user/{name?}', function ($name=null) {
-    return "$name";
-});
-
-/*
-// All listings
-Route::get('/', function () {
-    return view('listings', [
-        'heading'=> 'LatestListings',
-        'listings'=> Listing::all(),
-    ]);
-});
-
-// Single listings
-Route::get('/{id}/', function($id){
-    return view('listing', [
-        'heading'=> 'kowno',
-        'listings'=> Listing::find($id),
-    ]);
-});
-*/
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/okregowa', [PageController::class, 'okregowa'])->name('okregowa');
+Route::get('/aklasa', [PageController::class, 'aklasa'])->name('aklasa');
+Route::get('/bklasa', [PageController::class, 'bklasa'])->name('bklasa');
+Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/contact', [PageController::class, 'handleContact'])->name('handleContact');
