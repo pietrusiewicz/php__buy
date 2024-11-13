@@ -25,14 +25,14 @@ class PageController extends Controller
         return view('gallery');
     }
 
-    public function contact() {
-        return view('contact');
+    public function cards() {
+        return view('cards');
     }
 
-    public function handleContact(Request $request) {
-        $name = $request->input('name');
-        $message = $request->input('message');
+    public function submitCard(Request $request) {
+        $y = $request->input('yellow');
+        $r = $request->input('red');
         // Przykładowa akcja na otrzymanych wartościach
-        return redirect()->route('home')->with('status', 'Formularz został przesłany!');
+        return view('submitcards', ['yellow' => $y, 'red' => $r]);
     }
 }

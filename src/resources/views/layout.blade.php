@@ -14,7 +14,7 @@
             <li><a href="{{ route('aklasa') }}">Klasa A</a></li>          
             <li><a href="{{ route('bklasa') }}">Klasa B</a></li>
             <li><a href="{{ route('gallery') }}">Galeria</a></li>
-            <li><a href="{{ route('contact') }}">#zostansędzią</a></li>
+            <li><a href="{{ route('cards') }}">Kartki</a></li>
         </ul>
     </nav>
     <div class="content">
